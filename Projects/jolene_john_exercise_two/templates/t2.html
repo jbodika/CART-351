@@ -1,0 +1,37 @@
+<!-- will be a child of base-->
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="register-collect">
+        <div class="formContainer">
+            <!--form done using more current tags... -->
+            <form method="post"
+                  action="{{ url_for('thank_you_t2') }}"
+                  enctype="multipart/form-data">
+                <!-- group the related elements in a form -->
+                <h3> Please enter your name and write your comments below</h3>
+                <fieldset>
+                    <p>
+                        <label>First Name:</label>
+                        <input type="text" size="24" maxlength="40" name="f_name" required>
+                    </p>
+
+                    <p>
+                        <label>Last Name:</label>
+                        <input type="text" size="24" maxlength="40" name="l_name" required>
+                    </p>
+
+                    <p>
+                        <label>Enter comments here:</label><br>
+                        <textarea size="100" maxlength="100" name="comments"></textarea>
+                    </p>
+
+                    <p>
+                        <label></label>
+                        <input id="submitForm" type="submit" name="submit" value="submit my info" id=buttonS/>
+                    </p>
+                </fieldset>
+            </form>
+        </div>
+    </section>
+{% endblock %}

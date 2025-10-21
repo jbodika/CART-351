@@ -1,0 +1,47 @@
+<!-- will be a child of base-->
+{% extends "base.html" %}
+
+{% block content %}
+    <section>
+
+        <table>
+            <tr>
+                <th>Ice Cream Flavours 🍨</th>
+            </tr>
+            <tbody>  {% for item in icecream_flavors %}
+                <tr>
+                    <td>{{ item }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Number of {{ the_topic }} in stock: {{ num_donuts }}</h3>
+
+        <table>
+            <tr>
+                <th>Donut Flavours</th>
+            </tr>
+            <tbody>  {% for item in donut_data.flavours %}
+                <tr>
+                    <td>{{ item }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <table>
+            <tr>
+                <th>Donut Toppings</th>
+            </tr>
+            <tbody>  {% for item in donut_data.toppings %}
+                <tr>
+                    <td>{{ item }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </section>
+{% endblock %}

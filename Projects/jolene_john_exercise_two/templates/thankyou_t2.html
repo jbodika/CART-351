@@ -1,0 +1,11 @@
+<!-- will be a child of base-->
+{% extends "base.html" %}
+
+{% block content %}
+    <section>
+    <h1>Thank you for submitting your comments! Here's your secret code. </h1>
+        <p>Hover over the text below to reveal the code!</p>
+        <h3 class="secret-code">{{ output_string }}</h3>
+
+    </section>
+{% endblock %}

@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+
+}
+
+h2 {
+
+    font-size: 32px;
+    padding: 5px;
+    background-color: rgb(167, 69, 112);
+    color: rgb(255, 255, 255);
+}
+
+nav {
+    padding-bottom: 5px;
+    background-color: rgb(167, 69, 112);
+}
+
+nav ul {
+    display: flex;
+    justify-content: right;
+
+}
+
+nav ul li {
+    width: 10%;
+    text-transform: uppercase;
+    text-decoration: none;
+    list-style-type: none;
+
+
+}
+
+nav li a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+
+main {
+    margin: 10px;
+    background-color: rgb(229, 243, 245);
+    min-height: calc(75vh);
+}
+
+footer {
+    background-color: rgb(167, 69, 112);
+    min-height: 5vh;
+    padding: 5px;
+    color: rgb(255, 255, 255);
+
+}
+
+th {
+    background-color: lightblue;
+}
+
+table {
+    background-color: lightgoldenrodyellow;
+    margin-bottom: 20px;
+    align-items: center;
+
+}
+
+tr:nth-child(even) {
+
+    background-color: white;
+
+}
+
+td {
+    text-align: center;
+}
+
+
+.register-collect {
+    padding-top: 10px;
+    background-color: lightyellow;
+    padding-bottom: 10px;
+}
+
+#submitRegister {
+    width: auto;
+    margin-top: 10px;
+}
+
+.register-collect h3 {
+    padding: 5px;
+    text-align: center;
+    font-size: 24px;
+    color: rgb(191, 147, 189);
+}
+
+.secret-code {
+    display: inline-block;
+    font-size: 2rem;
+    margin-top: 50px;
+    cursor: pointer;
+
+    background: linear-gradient(90deg, lightsalmon, lightskyblue, lightpink);
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    filter: blur(6px);
+    transition: filter 0.5s ease, opacity 0.5s ease;
+    opacity: 0.9;
+}
+
+.secret-code:hover {
+    filter: blur(0);
+    opacity: 1;
+}
