@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="register-collect">
+  <div class="formContainer">
+    <h1>Please tell us how you feel in the anonymous form.</h1>
+
+    <form id="feelForm">
+      <fieldset>
+         <div class="buttons">
+            <p>Tell us how you feel on a scale of 1 - 5.</p>
+            <label><input type="radio" name="feeling" value="1" required>1</label><br>
+            <label><input type="radio" name="feeling" value="2">2</label><br>
+            <label><input type="radio" name="feeling" value="3">3</label><br>
+            <label><input type="radio" name="feeling" value="4">4</label><br>
+            <label><input type="radio" name="feeling" value="5">5</label><br>
+        </div>
+
+        <p>
+          <label for="comments">Explain how you’re feeling:</label><br>
+          <textarea id="comments" maxlength="100" required></textarea>
+        </p>
+
+        <p><button id="submitForm">Submit</button></p>
+      </fieldset>
+    </form>
+
+    <div id="responseDiv" class="hidden">
+      <p id="responseMsg"></p>
+    </div>
+  </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

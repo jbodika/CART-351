@@ -1,0 +1,200 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+
+}
+
+h2 {
+
+    font-size: 32px;
+    padding: 5px;
+    background-color: rgb(167, 69, 112);
+    color: rgb(255, 255, 255);
+}
+
+nav {
+    padding-bottom: 5px;
+    background-color: rgb(167, 69, 112);
+}
+
+nav ul {
+    display: flex;
+    justify-content: right;
+
+}
+
+nav ul li {
+    width: 10%;
+    text-transform: uppercase;
+    text-decoration: none;
+    list-style-type: none;
+
+
+}
+
+nav li a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+
+main {
+    margin: 10px;
+    background-color: rgb(229, 243, 245);
+    min-height: calc(75vh);
+}
+
+footer {
+    background-color: rgb(167, 69, 112);
+    min-height: 5vh;
+    padding: 5px;
+    color: rgb(255, 255, 255);
+
+}
+
+
+input[type= 'radio'] {
+    accent-color: #a745d1;
+}
+
+label:hover {
+    background-color: aqua;
+}
+
+.fieldset {
+    padding: 20px;
+}
+
+.buttons {
+    border: none;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+
+#responseMsg {
+    text-align: center;
+    font-size: 20px;
+    color: #000;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+#responseDiv {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background 0.5s ease;
+}
+
+/*------------------------------------------
+ANIMATIONS */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-up {
+    animation: slideUp 1s ease-out;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+.bounce {
+    animation: bounce 1s ease;
+}
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 0.8s ease-in-out infinite;
+}
+
+
+@keyframes rainbow {
+    0% {
+        background: linear-gradient(90deg, red, orange, yellow, green, blue, violet);
+    }
+    100% {
+        background: linear-gradient(90deg, violet, blue, green, yellow, orange, red);
+    }
+}
+
+.rainbow {
+    background-size: 400%;
+    animation: rainbow 2s linear infinite alternate;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1.5s ease-in;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation: shake 0.5s ease;
+}
