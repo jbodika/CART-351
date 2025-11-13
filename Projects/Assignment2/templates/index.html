@@ -4,17 +4,38 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
-    <script src="static\js\main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heatmap.js@2.0.2/heatmap.min.js"></script>
+    <script src="static/js/main.js"></script>
+    <script src="static/js/post-data.js"></script>
     <link rel="stylesheet" href="../static/css/styles.css">
 </head>
 <body>
-<div class="bg-image"></div>
 
-<div class="bg-text">
-  <h2>Blurred Background</h2>
-  <h1 style="font-size:50px">I am John Doe</h1>
-  <p>And I'm a Photographer</p>
+<button id="openFormBtn">Record Coordinates</button>
+
+<div id="play">
+    <h2>Move your mouse around to listen.
+        <br><br>
+    Click to begin.
+    </h2>
 </div>
+
+<!-- pop_up overlay -->
+<div id="userFormPopUp" class="pop_up">
+    <div class="pop_up-content">
+        <span class="close-btn">&times;</span>
+        <h3>Save your favourite coordinates for the Heatmap</h3>
+        <form id="userForm">
+            <label for="name"></label>
+            <input type="text" id="name" placeholder="Your Name" required/>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+<div id="canvas"></div>
 
 </body>
 

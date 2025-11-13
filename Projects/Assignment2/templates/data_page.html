@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users' Coordinates</title>
+    <link rel="stylesheet" href="../static/css/data_page.css">
+
+</head>
+<body>
+
+<h2>List of Users and their favourite coordinates </h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>X</th>
+        <th>Y</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.name }}</td>
+        <td>{{ user.coordinates.x }}</td>
+        <td>{{ user.coordinates.y }}</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="3">No data available.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{{ url_for('main') }}">Back to main page</a></p>
+
+</body>
+</html>
