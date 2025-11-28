@@ -66,13 +66,15 @@ window.onload = function () {
                  ** bonus: if your visualizations(s) are interactive or animate.
                  ****/
                 case "three": {
-                    displayAsTriangleOfTriangles(resJSON);
+                    // WIP
+                    displayGreen(resJSON, "weather", "eventName")
                     break;
                 }
-              case "four": {
-  displayAsGiantCircleWithSideArc(resJSON);
-  break;
-}
+                case "four": {
+                    console.log("five")
+
+                    break;
+                }
 
                 case "five": {
                     console.log("five")
@@ -360,6 +362,82 @@ window.onload = function () {
     } //function
 
     /***********************************************/
+    function displayGreen(resultOBj) {
+        //reset
+        dataPoints = [];
+        let xPos = 0;
+        let yPos = 0;
+        const NUM_COLS = 50;
+        const CELL_SIZE = 20;
+        let coloredMoods = {};
+        let resultSet = resultOBj.results;
+        possibleMoods = resultOBj.moods;
+        /*
+      1: get the array of days (the second entry in the resultOBj)
+      2: for each possible day (7)  - create a key value pair -> day: color and put in the
+      coloredDays object
+      */
+        console.log(possibleMoods);
+        let possibleColors = [
+            "rgb(150,199,126)",
+            "rgb(81,107,67)",
+            "rgb(65,98,55)",
+            "rgb(47,75,34)",
+            "rgb(157,227,118)",
+            "rgb(122,224,70)",
+            "rgb(96,218,35)",
+        ];
+
+        for (let i = 0; i < possibleMoods.length; i++) {
+            coloredMoods[possibleMoods[i]] = possibleColors[i];
+        }
+        /* for through each result
+        1: create a new MyDataPoint object and pass the properties from the db result entry to the object constructor
+        2: set the color using the coloredDays object associated with the resultSet[i].day
+        3:  put into the dataPoints array.
+        **/
+        //set background of parent ... for fun ..
+        document.querySelector("#parent-wrapper").style.background =
+            "rgb(166,190,157)";
+        description.textContent = "DEfAULT CASE";
+        description.style.color = "rgb(17,255,0)";
+
+        //last  element is the helper array...
+        for (let i = 0; i < resultSet.length - 1; i++) {
+            dataPoints.push(
+                new myDataPoint(
+                    resultSet[i].dataId,
+                    resultSet[i].day,
+                    resultSet[i].weather,
+                    resultSet[i].start_mood,
+                    resultSet[i].after_mood,
+                    resultSet[i].after_mood_strength,
+                    resultSet[i].event_affect_strength,
+                    resultSet[i].evnet_name,
+                    //map to the day ...
+                    coloredMoods[resultSet[i].day],
+                    //last parameter is where should this go...
+                    document.querySelector("#childOne"),
+                    //which css style///
+                    "point"
+                )
+            );
+
+            /** this code is rather brittle - but does the job for now .. draw a grid of data points ..
+             //*** drawing a grid ****/
+            if (i % NUM_COLS === 0) {
+                //reset x and inc y (go to next row)
+                xPos = 0;
+                yPos += CELL_SIZE;
+            } else {
+                //just move along in the column
+                xPos += CELL_SIZE;
+            }
+            //update the position of the data point...
+            dataPoints[i].update(xPos, yPos);
+        } //for
+        document.querySelector("#childOne").style.height = `${yPos + CELL_SIZE}px`;
+    } //function
 
 
 };

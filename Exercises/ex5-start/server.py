@@ -132,7 +132,7 @@ def three():
     results = mongo.db.dataStuff.find(
         {"after_mood": {"$in": positive_moods}}
     )
-    return ({"results": results, "moods": moods})
+    return {"results": results, "moods": moods}
 
 
 @app.route("/four")
