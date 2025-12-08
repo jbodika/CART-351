@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Garden – Collective Garden{% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/client.js') }}"></script>
+<script src="{{ url_for('static', filename='js/clientP5.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+<script>
+    const USERNAME = "{{ user }}";
+</script>
+
+<div id="waterToggleBtn" class="toggleBtns">
+    💧
+</div>
+
+
+<div id="harvestToggleBtn" class="toggleBtns">
+    🧑🏾‍🌾
+</div>
+
+<!-- Stats Overlay -->
+<div id="statsOverlay"
+     style="position:absolute; pointer-events:auto; z-index:60; display:none;">
+</div>
+
+
+<!-- Chat Toggle Button in bottom-right -->
+<div id="chatToggleBtn"
+     style="
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 50px;
+        height: 50px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 100;
+     ">
+    💬
+</div>
+
+<!-- Chat Container -->
+<div id="chatContainer">
+    <div id="chatList" style="max-height:180px; overflow-y:auto; padding-left: 8px; margin:6px 0;"></div>
+    <div id="chatInputRow" style="display:flex; gap:5px; margin-top:5px;">
+        <input
+                id="chatInput"
+                type="text"
+                placeholder="Type message..."
+                style="flex:1;"
+        />
+        <button id="chatSend" class="btn">Send</button>
+    </div>
+</div>
+
+<div id="plantSelector">
+</div>
+
+<!-- P5 Canvas -->
+<div id="p5-container"></div>
+
+{% endblock %}

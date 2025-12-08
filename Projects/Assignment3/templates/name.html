@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Collective Garden{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+{% endblock %}
+
+{% block content %}
+<div>
+    <h2>Enter Your Gardener Name</h2>
+
+    <form action="/garden" method="POST" style="margin-top:15px;">
+        <input
+                type="text"
+                name="user"
+                placeholder="Gardener name..."
+                required
+                style="padding:8px; width:200px;"
+        />
+        <br><br>
+        <button class="btn" style="padding:8px 15px;">Start Gardening</button>
+    </form>
+</div>
+{% endblock %}
