@@ -65,27 +65,22 @@ window.onload = function () {
                  ** you can create your own custom objects - but NO images, video or sound... (will get 0).
                  ** bonus: if your visualizations(s) are interactive or animate.
                  ****/
-                case "three": {
-                    // WIP
-                    displayGreen(resJSON, "weather", "eventName")
+                case "three":
+                    displayBubbles(resJSON);
                     break;
-                }
-                case "four": {
-                    console.log("five")
 
+                case "four":
+                    displayEventsSorted(resJSON)
                     break;
-                }
 
-                case "five": {
-                    console.log("five")
-                    // TODO
+                case "five":
+                    displayStrengthMeter(resJSON)
                     break;
-                }
-                case "six": {
-                    console.log("six")
-                    // TODO
+
+                case "six":
+                    displaySteam(resJSON);
                     break;
-                }
+
                 default: {
                     console.log("default case");
                     break;
@@ -335,7 +330,7 @@ window.onload = function () {
                     resultSet[i].after_mood,
                     resultSet[i].after_mood_strength,
                     resultSet[i].event_affect_strength,
-                    resultSet[i].evnet_name,
+                    resultSet[i].event_name,
                     //map to the day ...
                     coloredDays[resultSet[i].day],
                     //last parameter is where should this go...
@@ -361,83 +356,303 @@ window.onload = function () {
         document.querySelector("#childOne").style.height = `${yPos + CELL_SIZE}px`;
     } //function
 
-    /***********************************************/
-    function displayGreen(resultOBj) {
-        //reset
+    function displayBubbles(resultObj) {
         dataPoints = [];
-        let xPos = 0;
-        let yPos = 0;
-        const NUM_COLS = 50;
-        const CELL_SIZE = 20;
-        let coloredMoods = {};
-        let resultSet = resultOBj.results;
-        possibleMoods = resultOBj.moods;
-        /*
-      1: get the array of days (the second entry in the resultOBj)
-      2: for each possible day (7)  - create a key value pair -> day: color and put in the
-      coloredDays object
-      */
-        console.log(possibleMoods);
-        let possibleColors = [
-            "rgb(150,199,126)",
-            "rgb(81,107,67)",
-            "rgb(65,98,55)",
-            "rgb(47,75,34)",
-            "rgb(157,227,118)",
-            "rgb(122,224,70)",
-            "rgb(96,218,35)",
-        ];
+        const container = document.querySelector("#childOne");
+        const height = 600;
+        container.style.height = height + "px";
 
-        for (let i = 0; i < possibleMoods.length; i++) {
-            coloredMoods[possibleMoods[i]] = possibleColors[i];
-        }
-        /* for through each result
-        1: create a new MyDataPoint object and pass the properties from the db result entry to the object constructor
-        2: set the color using the coloredDays object associated with the resultSet[i].day
-        3:  put into the dataPoints array.
-        **/
-        //set background of parent ... for fun ..
-        document.querySelector("#parent-wrapper").style.background =
-            "rgb(166,190,157)";
-        description.textContent = "DEfAULT CASE";
-        description.style.color = "rgb(17,255,0)";
+        document.querySelector("#parent-wrapper").style.background = "#e6f7ff";
+        description.textContent = "POSITIVE AFTER MOODS — FLOATING UP";
+        description.style.color = "#3399ff";
 
-        //last  element is the helper array...
-        for (let i = 0; i < resultSet.length - 1; i++) {
-            dataPoints.push(
-                new myDataPoint(
-                    resultSet[i].dataId,
-                    resultSet[i].day,
-                    resultSet[i].weather,
-                    resultSet[i].start_mood,
-                    resultSet[i].after_mood,
-                    resultSet[i].after_mood_strength,
-                    resultSet[i].event_affect_strength,
-                    resultSet[i].evnet_name,
-                    //map to the day ...
-                    coloredMoods[resultSet[i].day],
-                    //last parameter is where should this go...
-                    document.querySelector("#childOne"),
-                    //which css style///
-                    "point"
-                )
+        let resultSet = resultObj.results;
+
+        resultSet.forEach((d, i) => {
+            let size = 5 + d.after_mood_strength * 3;
+
+            let p = new myDataPoint(
+                d.dataId, d.day, d.weather, d.start_mood,
+                d.after_mood, d.after_mood_strength,
+                d.event_affect_strength, d.event_name,
+                "rgba(51,153,255,.6)",
+                container,
+                "point_two"
             );
 
-            /** this code is rather brittle - but does the job for now .. draw a grid of data points ..
-             //*** drawing a grid ****/
-            if (i % NUM_COLS === 0) {
-                //reset x and inc y (go to next row)
-                xPos = 0;
-                yPos += CELL_SIZE;
-            } else {
-                //just move along in the column
-                xPos += CELL_SIZE;
-            }
-            //update the position of the data point...
-            dataPoints[i].update(xPos, yPos);
-        } //for
-        document.querySelector("#childOne").style.height = `${yPos + CELL_SIZE}px`;
-    } //function
+            p.container.style.width = size + "px";
+            p.container.style.height = size + "px";
+            p.container.style.borderRadius = "50%";
 
+            let x = Math.random() * window.innerWidth;
+            let y = height + Math.random() * 200;
+            let speed = 0.3 + d.after_mood_strength * 0.15;
+
+            function animate() {
+                y -= speed;
+                x += Math.sin(y * 0.01) * 0.5;
+
+                if (y < -20) {
+                    y = height + Math.random() * 100;
+                }
+                p.update(x, y);
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        });
+    }
+
+    function displaySteam(resultObj) {
+        dataPoints = [];
+        const container = document.querySelector("#childOne");
+        container.style.height = "500px";
+
+        document.querySelector("#parent-wrapper").style.background = "#1a1a1a";
+        description.textContent = "NEGATIVE MOODS — WEATHER PRESSURE";
+        description.style.color = "#ccc";
+
+        let resultSet = resultObj.results;
+        let weatherGroups = {};
+
+        resultSet.forEach(d => {
+            if (!weatherGroups[d.weather]) weatherGroups[d.weather] = [];
+            weatherGroups[d.weather].push(d);
+        });
+
+        let index = 0;
+        for (let weather in weatherGroups) {
+            let baseX = 150 + index * 200;
+            let baseY = 380;
+
+            // hole
+            let hole = document.createElement("div");
+            hole.style.position = "absolute";
+            hole.style.left = baseX - 40 + "px";
+            hole.style.top = baseY + "px";
+            hole.style.width = "80px";
+            hole.style.height = "20px";
+            hole.style.borderRadius = "50%";
+            hole.style.background = "#000";
+            container.appendChild(hole);
+
+            weatherGroups[weather].forEach(d => {
+                let p = new myDataPoint(
+                    d.dataId, d.day, d.weather, d.start_mood,
+                    d.after_mood, d.after_mood_strength,
+                    d.event_affect_strength, d.event_name,
+                    "rgba(200,200,200,.6)",
+                    container,
+                    "point_two"
+                );
+
+                let y = baseY;
+                let speed = 0.2 + d.after_mood_strength * 0.2;
+
+                function animate() {
+                    y -= speed;
+                    if (y < baseY - d.after_mood_strength * 40) {
+                        y = baseY;
+                    }
+                    p.update(baseX + Math.random() * 20 - 10, y);
+                    requestAnimationFrame(animate);
+                }
+
+                animate();
+            });
+            index++;
+        }
+    }
+
+    function displayEventsSorted(resultObj) {
+        dataPoints = [];
+        const container = document.querySelector("#childOne");
+
+        document.querySelector("#parent-wrapper").style.background = "#2d1b4e";
+        description.textContent = "ALL ENTRIES — BY EVENT NAME";
+        description.style.color = "#b794f6";
+
+        let resultSet = resultObj.results;
+        // group by event name
+        let eventGroups = {};
+        resultSet.forEach(d => {
+            if (!eventGroups[d.event_name]) {
+                eventGroups[d.event_name] = [];
+            }
+            eventGroups[d.event_name].push(d);
+        });
+
+        // Colors
+        let eventColors = [
+            "rgba(138, 43, 226, 0.7)",
+            "rgba(104,5,176,0.7)",
+            "rgba(147, 112, 219, 0.7)",
+            "rgba(153, 50, 204, 0.7)",
+            "rgba(186, 85, 211, 0.7)",
+            "rgba(148, 0, 211, 0.7)",
+            "rgba(199, 21, 133, 0.7)",
+            "rgba(218, 112, 214, 0.7)",
+            "rgba(238, 130, 238, 0.7)",
+            "rgba(221, 160, 221, 0.7)",
+        ];
+
+        let colorIndex = 0;
+        let columnX = 80;
+        const columnSpacing = 90;
+        let maxHeight = 0;
+
+        // Create the cols for each event
+        for (let eventName in eventGroups) {
+            let entries = eventGroups[eventName];
+            let color = eventColors[colorIndex % eventColors.length];
+
+            // Create event label
+            let label = document.createElement("div");
+            label.style.position = "absolute";
+            label.style.left = (columnX - 20) + "px";
+            label.style.top = "80px";
+            label.style.color = color;
+            label.style.fontSize = "11px";
+            label.style.fontWeight = "bold";
+            label.style.width = "100px";
+            label.style.textAlign = "center";
+            label.style.transform = "rotate(-45deg)";
+            label.style.transformOrigin = "left top";
+            label.textContent = eventName;
+            container.appendChild(label);
+
+            // Display vertically in the specific col
+            entries.forEach((d, i) => {
+                let p = new myDataPoint(
+                    d.dataId, d.day, d.weather, d.start_mood,
+                    d.after_mood, d.after_mood_strength,
+                    d.event_affect_strength, d.event_name,
+                    color,
+                    container,
+                    "point_two"
+                );
+
+                let yPos = 150 + (i * 12);
+                p.update(columnX, yPos);
+                maxHeight = Math.max(maxHeight, yPos);
+            });
+
+            columnX += columnSpacing;
+            colorIndex++;
+        }
+
+        container.style.height = (maxHeight + 50) + "px";
+    }
+
+    function displayStrengthMeter(resultObj) {
+        dataPoints = [];
+        const container = document.querySelector("#childOne");
+
+        document.querySelector("#parent-wrapper").style.background = "#1a2332";
+        description.textContent = "MONDAY/TUESDAY — SORTED BY EVENT AFFECT STRENGTH";
+        description.style.color = "#4fc3f7";
+
+        let resultSet = resultObj.results;
+
+        // Create strength scale labels
+        let scaleLabel = document.createElement("div");
+        scaleLabel.style.position = "absolute";
+        scaleLabel.style.left = "20px";
+        scaleLabel.style.top = "100px";
+        scaleLabel.style.color = "#4fc3f7";
+        scaleLabel.style.fontSize = "14px";
+        scaleLabel.style.fontWeight = "bold";
+        scaleLabel.textContent = "AFFECT STRENGTH →";
+        container.appendChild(scaleLabel);
+
+        // Create strength zones with labels
+        for (let i = 0; i <= 10; i++) {
+            let marker = document.createElement("div");
+            marker.style.position = "absolute";
+            marker.style.left = (180 + i * 80) + "px";
+            marker.style.top = "100px";
+            marker.style.width = "1px";
+            marker.style.height = "500px";
+            marker.style.background = `rgba(79, 195, 247, ${0.1 + i * 0.05})`;
+            container.appendChild(marker);
+
+            let label = document.createElement("div");
+            label.style.position = "absolute";
+            label.style.left = (175 + i * 80) + "px";
+            label.style.top = "75px";
+            label.style.color = "#4fc3f7";
+            label.style.fontSize = "10px";
+            label.textContent = i;
+            container.appendChild(label);
+        }
+
+        // Color by day
+        let dayColors = {
+            "Monday": "rgba(255, 107, 107, 0.8)",
+            "Tuesday": "rgba(78, 205, 196, 0.8)"
+        };
+
+        // Stack points based on event_affect_strength
+        let heightTracker = {}; // keep track of heights at each strength level
+        let maxHeight = 0; // keep track of maximum height for container sizing
+
+        resultSet.forEach(d => {
+            let strength = d.event_affect_strength;
+            let xBase = 180 + strength * 80;
+
+            // Initialize height tracker for this strength level
+            if (!heightTracker[xBase]) {
+                heightTracker[xBase] = 140;
+            }
+
+            let color = dayColors[d.day] || "rgba(150, 150, 150, 0.8)";
+
+            let p = new myDataPoint(
+                d.dataId, d.day, d.weather, d.start_mood,
+                d.after_mood, d.after_mood_strength,
+                d.event_affect_strength, d.event_name,
+                color,
+                container,
+                "point_two"
+            );
+            // change size
+            let size = 8 + strength;
+            p.container.style.width = size + "px";
+            p.container.style.height = size + "px";
+            p.container.style.borderRadius = "50%";
+
+            // Add offset
+            let xOffset = Math.random() * 30 - 15;
+
+            p.update(xBase + xOffset, heightTracker[xBase]);
+            heightTracker[xBase] += (size + 3);
+
+            maxHeight = Math.max(maxHeight, heightTracker[xBase]);
+        });
+
+        // Legend by day
+        let mondayLegend = document.createElement("div");
+        mondayLegend.style.position = "absolute";
+        mondayLegend.style.left = "20px";
+        mondayLegend.style.top = "130px";
+        mondayLegend.style.color = dayColors["Monday"];
+        mondayLegend.style.fontSize = "12px";
+        mondayLegend.style.fontWeight = "bold";
+        mondayLegend.innerHTML = "● Monday";
+        container.appendChild(mondayLegend);
+
+        let tuesdayLegend = document.createElement("div");
+        tuesdayLegend.style.position = "absolute";
+        tuesdayLegend.style.left = "20px";
+        tuesdayLegend.style.top = "150px";
+        tuesdayLegend.style.color = dayColors["Tuesday"];
+        tuesdayLegend.style.fontSize = "12px";
+        tuesdayLegend.style.fontWeight = "bold";
+        tuesdayLegend.innerHTML = "● Tuesday";
+        container.appendChild(tuesdayLegend);
+
+        // Adjust container
+        container.style.height = (maxHeight + 50) + "px";
+    }
 
 };

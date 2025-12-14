@@ -132,13 +132,14 @@ def three():
     results = mongo.db.dataStuff.find(
         {"after_mood": {"$in": positive_moods}}
     )
-    return {"results": results, "moods": moods}
+    return {"results": results, "moods": positive_moods}
 
 
 @app.route("/four")
 def four():
     results = mongo.db.dataStuff.find().sort("event_name", 1)
-    return ({"results": results, "moods": moods})
+    all_events = mongo.db.dataStuff.distinct("event_name")
+    return {"results": list(results), "events": all_events}
 
 
 @app.route("/five")
@@ -147,7 +148,7 @@ def five():
         {"day": {"$in": ["Monday", "Tuesday"]}}
     ).sort("event_affect_strength", 1)
 
-    return ({"results": results, "moods": moods})
+    return {"results": list(results), "days": ["Monday", "Tuesday"]}
 
 
 @app.route("/six")
@@ -159,7 +160,8 @@ def six():
         }
     ).sort("weather", 1)
 
-    return ({"results": results, "moods": moods})
+    all_weather = mongo.db.dataStuff.distinct("weather")
+    return {"results": list(results), "weather": all_weather}
 
 
 app.run(debug=True)
